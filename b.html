@@ -1,0 +1,114 @@
+<html>
+    <head>
+        <title>שעון</title>
+        
+    </head>
+    <body>
+        <clock-meneger selector="aaa"></meneger>
+        <clock-a id="aaa" city ="israel" time ="3"></clock> 
+        <clock-meneger selector="bbb"></meneger>
+        <clock-a id="bbb" city ="israel" time ="3"></clock> 
+    </body>
+</html>
+
+
+
+<script>
+
+    class myClock extends HTMLElement{
+        constructor(){
+            super();
+            let aClock = this.getAttribute('selector')
+            this.bClock = document.querySelector(aClock)
+            const shdow = this.attachShadow({mode:'open'})
+
+            const divA = document.createElement('div')
+            shdow.appendChild(divA)
+
+            const cityA =document.createElement('h1')
+            cityA.innerHTML = 'city'
+            divA.appendChild(cityA)
+
+            this.innputCity = document.createElement('input')
+            this.innputCity.placeholder = 'city'
+            divA.appendChild(this.innputCity)
+
+            this.innputCity.oninput=ev =>{
+                this.bClock.setAttribute('city',ev.target.value)
+
+            }
+            const divC = document.createElement('div')
+            shdow.appendChild(divC)
+
+            const timeA =document.createElement('h1')
+            cityA.innerHTML = 'time'
+            divC.appendChild(cityA)
+
+            this.innputTime = document.createElement('input')
+            this.innputTime.placeholder = 'time'
+            divA.appendChild(this.innputTime)
+
+            this.innputTime.oninput=ev =>{
+                this.bClock.setAttribute('time',ev.target.value)
+        }
+    }
+}
+customElements.define('clock-meneger',myClock)
+</script>
+
+
+
+
+
+
+<script>
+    let clock2=document.querySelector('js-clock')
+class Db extends HTMLElement {
+    
+    static get observedAttributes() {
+        return ["city", "time"];
+    }
+    getdata(date) {
+        return `${date.getHours()} : ${date.getMinutes()} : ${date.getSeconds()}`
+
+    }
+    constructor() {
+        
+        super()
+        
+       
+        
+        // root
+        const shdow = this.attachShadow({ mode: 'open' })
+
+        // div
+        const div = document.createElement('div');
+        shdow.appendChild(div);
+
+        this.cityh1 = document.createElement('h1');
+        this.timeDiv = document.createElement('div');
+
+        div.appendChild(this.cityh1);
+        div.appendChild(this.timeDiv);
+
+
+
+
+        setInterval(() => {
+            let a = new Date()
+            a.setHours(a.getHours()+this.time)
+            this.timeDiv.innerHTML = this.getdata(a)
+        }, 100);
+    }
+        attributeChangedCallback(name, oldValue, newValue) {
+            this.cityh1.innerHTML = this.getAttribute('city')
+            if (name == "time") {
+
+                this.time = parseInt(newValue)
+                console.log(this.time)
+            }
+        }
+    
+}
+customElements.define('clock-a', Db)
+</script>
